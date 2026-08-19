@@ -370,22 +370,3 @@ fig.show()   # panggil .show() eksplisit; mengembalikan Figure saja tidak selalu
 Notebook menyediakan helper `show_fig()` dengan fallback berlapis, plus sel fallback matplotlib yang tidak bergantung Plotly sama sekali.
 
 **Scraping berhenti sebelum target.** Umumnya bukan bug — X memang tidak menampilkan cukup post relevan. Perkecil `--chunk-days`, naikkan `--scrolls-per-window`, atau turunkan `--target-rows`.
-
-## 📄 License
-
-> **Belum ditentukan.** Repo ini belum memiliki file `LICENSE`.
-
-Perlu diketahui: tanpa lisensi eksplisit, karya ini secara default berstatus **hak cipta penuh** (*all rights reserved*) menurut hukum hak cipta. Meski repo bersifat publik, orang lain **tidak** memiliki izin legal untuk menggunakan, memodifikasi, atau mendistribusikan kodenya.
-
-Bila diinginkan pemakaian terbuka, tambahkan salah satu lisensi berikut:
-
-| Lisensi | Cocok untuk |
-|---|---|
-| **MIT** | Paling permisif, ringkas; umum untuk project riset |
-| **Apache 2.0** | Permisif + klausul paten eksplisit |
-| **GPL-3.0** | Mewajibkan karya turunan tetap open source |
-| **CC BY-NC 4.0** | Riset non-komersial, tapi kurang lazim untuk kode |
-
-### Catatan terpisah soal data
-
-Lisensi kode **tidak** otomatis berlaku bagi data hasil scraping. Konten post X tetap milik pembuatnya masing-masing dan terikat [Terms of Service X](https://x.com/en/tos). Karena itu `data/raw/` dikecualikan dari repo. Pastikan pemanfaatan data mengikuti ToS platform dan regulasi perlindungan data yang berlaku di wilayahmu. Data ini dikumpulkan untuk keperluan riset.

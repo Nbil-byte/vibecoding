@@ -1,0 +1,35 @@
+# Dependensi tahap analisis (sentimen + topic modeling).
+# Terpisah dari requirements.txt karena jauh lebih berat dan tidak
+# dibutuhkan bila kamu hanya menjalankan scraping.
+#
+#   pip install -r requirements-analysis.txt
+#
+# Catatan torch: baris di bawah memasang build default (CPU di Windows).
+# Untuk GPU, pasang torch lebih dulu mengikuti panduan resmi
+# https://pytorch.org/get-started/locally/ lalu jalankan file ini.
+
+# --- Analisis sentimen ---
+torch==2.12.1
+transformers==4.44.2
+sentencepiece==0.2.2
+protobuf==5.29.6
+scipy==1.14.1
+
+# --- Topic modeling ---
+bertopic==0.17.4
+sentence-transformers==3.0.1
+umap-learn==0.5.7
+hdbscan==0.8.40
+scikit-learn==1.5.2
+
+# --- Visualisasi ---
+matplotlib==3.10.9
+seaborn==0.13.2
+plotly==6.7.0
+
+# --- Dukungan notebook ---
+# nbformat wajib ada agar grafik Plotly mau tampil di notebook.
+# kaleido dipakai sebagai fallback render gambar statis.
+nbformat==5.11.1
+ipywidgets==8.1.8
+kaleido

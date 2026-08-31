@@ -41,7 +41,13 @@ def clean_text(text: str) -> str:
 
 # --- Load data ---
 print(f"Loading rows {START_ROW}-{START_ROW + N_ROWS} from {INPUT_CSV} ...")
-df = pd.read_csv(INPUT_CSV, encoding="utf-8-sig").iloc[START_ROW:START_ROW + N_ROWS]
+# sep=None + engine="python" membuat pandas mendeteksi delimiter sendiri.
+# Diperlukan karena vibecoding_relevant_10000.csv memakai ';' sementara file
+# keluaran sentimen memakai ','; tanpa ini file ';' terparsing jadi satu kolom
+# dan akses df["text"] gagal.
+df = pd.read_csv(
+    INPUT_CSV, sep=None, engine="python", encoding="utf-8-sig"
+).iloc[START_ROW:START_ROW + N_ROWS]
 print(f"Loaded {len(df)} rows. Columns: {df.columns.tolist()}")
 
 # Clean text

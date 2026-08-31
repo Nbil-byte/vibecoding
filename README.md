@@ -15,6 +15,7 @@ Dataset acuan: **~10.000 post relevan**, rentang **Mei 2022 – Juli 2026**, mul
 - **Pengaman metodologis** — deteksi kuartal bervolume mikro dan audit reduksi outlier, keduanya mencegah kesimpulan palsu
 - **Analisis per tool** — perbandingan sentimen dan topik antar Claude, Cursor, Copilot, Replit, Lovable, Bolt, ChatGPT, Gemini, Windsurf
 - **Fallback grafik berlapis** — Plotly interaktif, jatuh ke PNG statis, lalu ke matplotlib murni
+- **Dashboard interaktif** — Streamlit lima halaman dengan narasi yang seluruh angkanya dihitung dari data saat runtime, bukan ditulis tetap
 
 ## 🛠️ Tech Stack
 
@@ -38,6 +39,11 @@ Dataset acuan: **~10.000 post relevan**, rentang **Mei 2022 – Juli 2026**, mul
 - Plotly 6.7 + kaleido
 - Jupyter / Google Colab
 
+**Dashboard**
+- Streamlit 1.41 — antarmuka web
+- Plotly 6.7 — grafik interaktif bertema kustom
+- pytest 8 — test lapisan data
+
 ## 📂 Project Structure
 
 ```
@@ -51,11 +57,29 @@ vibecoding/
 ├── timeline_analysis.ipynb        # Volume, kurva adopsi, deteksi spike
 ├── analysis.ipynb                 # Eksplorasi gabungan & narrative timeline
 │
+├── dashboard/                     # Dashboard Streamlit
+│   ├── app.py                     #   Entry point + routing halaman
+│   ├── theme.py                   #   Palet warna, template Plotly, CSS
+│   ├── data.py                    #   Loader, agregasi, deteksi tool & spike
+│   ├── narrative.py               #   Generator narasi berbasis data
+│   └── sections/
+│       ├── overview.py            #   Halaman Narasi
+│       ├── timeline.py            #   Halaman Timeline
+│       ├── sentiment.py           #   Halaman Sentimen
+│       ├── topics.py              #   Halaman Topik & Tool
+│       └── explorer.py            #   Halaman Jelajah Data
+│
+├── tests/
+│   └── test_dashboard_data.py     # 22 test lapisan data
+│
+├── .streamlit/config.toml         # Tema dark bawaan Streamlit
 ├── requirements.txt               # Dependensi scraping (ringan)
 ├── requirements-analysis.txt      # Dependensi analisis (berat, termasuk torch)
+├── requirements-dashboard.txt     # Dependensi dashboard (ringan)
 │
 ├── data/
-│   └── raw/                       # Dataset mentah — TIDAK di-commit
+│   ├── raw/                       # Dataset mentah — TIDAK di-commit
+│   └── processed/                 # Artefak olahan untuk dashboard
 ├── sessions/                      # Session browser — TIDAK di-commit
 ├── cookies.json                   # Kredensial — TIDAK di-commit
 └── accounts.db                    # Kredensial — TIDAK di-commit
@@ -65,11 +89,17 @@ Alur data antar komponen:
 
 ```
 playwright_scraper.py ─┐
-                       ├─→ data/raw/*.csv ─→ label_sentimen.py ─→ sentiment_colab.ipynb
-scraper.py ────────────┘                 │
-                                         ├─→ topic_modeling.ipynb
+                       ├─→ data/raw/*.csv ─→ label_sentimen.py ─┐
+scraper.py ────────────┘                 │                      │
+                                         ├─→ topic_modeling.ipynb ┤
+                                         ├─→ sentiment_colab.ipynb┤
                                          └─→ timeline_analysis.ipynb
+                                                                 │
+                                                                 ▼
+                                                    dashboard/app.py (Streamlit)
 ```
+
+Dashboard membaca CSV hasil olahan saja. Ia **tidak** menjalankan model — inferensi sentimen dan BERTopic tetap di skrip dan notebook, sehingga dashboard tetap ringan dan hasilnya reprodusibel.
 
 ## 🚀 Installation
 
@@ -89,6 +119,14 @@ pip install -r requirements-analysis.txt
 ```
 
 Untuk GPU, pasang PyTorch lebih dulu mengikuti [panduan resmi](https://pytorch.org/get-started/locally/), lalu jalankan perintah di atas. Tanpa GPU inferensi tetap jalan, hanya lebih lambat.
+
+### Dashboard saja
+
+Dashboard tidak memerlukan torch maupun BERTopic, jadi dependensinya ringan:
+
+```powershell
+pip install -r requirements-dashboard.txt
+```
 
 ### Google Colab
 
@@ -169,6 +207,30 @@ Jalankan `topic_modeling.ipynb` berurutan. Parameter utama terkumpul di sel impo
 
 Keluaran: `vibecoding_topics_docs.csv`, `vibecoding_topics_summary.csv`, `vibecoding_topics_per_quarter.csv`, `vibecoding_topics_diagnostics.csv`.
 
+### 5. Dashboard
+
+```powershell
+streamlit run dashboard/app.py
+```
+
+Buka `http://localhost:8501`. Lima halaman tersedia:
+
+| Halaman | Isi |
+|---|---|
+| **Narasi** | Cerita perkembangan dalam empat fase, KPI, temuan utama, keterbatasan |
+| **Timeline** | Volume harian, kurva adopsi, lonjakan terdeteksi + post penyebabnya |
+| **Sentimen** | Distribusi, tren kuartalan, net sentiment per tool, contoh post |
+| **Topik & Tool** | Artefak BERTopic, evolusi penyebutan tool, istilah dominan |
+| **Jelajah Data** | Filter, pencarian teks, ekspor CSV, akun teraktif |
+
+Dashboard mendeteksi sendiri data yang tersedia dan **menurun secara anggun** bila ada yang belum ada:
+
+- Dataset utama tidak ada → pesan berisi perintah scraping yang perlu dijalankan
+- Label sentimen belum ada → halaman Sentimen menampilkan cara menghasilkannya
+- Artefak BERTopic belum ada → halaman Topik jatuh ke analisis tool dan frekuensi istilah, yang dihitung langsung dari teks
+
+Untuk memuat hasil BERTopic, jalankan `topic_modeling.ipynb` sampai sel "Simpan Hasil", lalu letakkan CSV keluarannya di `data/processed/`.
+
 ## 📊 Results
 
 Angka di bawah berasal dari run nyata atas 10.000 post.
@@ -216,6 +278,33 @@ Pola yang muncul: tool bervolume pembicaraan **tertinggi** justru bernet sentime
 Porsi positif memuncak di 2025Q3 (31,2%) lalu turun ke 20,7% di 2026Q3, sementara negatif naik ke titik tertinggi. Pola ini menyerupai pergeseran dari fase antusiasme awal ke penilaian yang lebih kritis seiring pemakaian produksi.
 
 > Kuartal 2022Q2, 2023Q3, dan 2024Q1 **dikecualikan** — masing-masing hanya berisi 1 post. Lihat [Methodology](#-methodology) untuk alasannya.
+
+### Lonjakan dan titik asal
+
+Deteksi spike (z ≥ 2,5 terhadap baseline bergerak 28 hari) menemukan **39 lonjakan harian** di sepanjang periode. Yang terbesar:
+
+| Tanggal | Post | Baseline | z-score |
+|---|---|---|---|
+| **3 Feb 2025** | 23 | 1 | **5,1** |
+
+Tanggal ini layak diperhatikan: ia jatuh **tepat setelah Andrej Karpathy memperkenalkan istilah *vibe coding* pada 2 Februari 2025**. Pipeline tidak pernah diberi tahu tanggal tersebut — lonjakan itu muncul murni dari statistik volume harian.
+
+Ini berfungsi sebagai **validasi eksternal**: metode deteksi spike berhasil menemukan kembali peristiwa asal-usul yang sudah diketahui secara independen. Baseline sebelum tanggal itu bernilai 1 post per hari, yang berarti istilah ini memang praktis tidak beredar sebelumnya.
+
+### Distribusi volume
+
+Dari 10.000 baris mentah, **9.995 valid** setelah baris bertanggal rusak dan post duplikat dibuang. Sebarannya sangat condong ke belakang:
+
+| Fase | Periode | Post | Porsi |
+|---|---|---|---|
+| Prasejarah | 2022Q2 – 2024Q1 | 3 | 0,03% |
+| Ledakan | 2025Q1 – 2025Q2 | 2.471 | 24,7% |
+| Arus utama | 2025Q3 – 2025Q4 | 3.270 | 32,7% |
+| Pendewasaan | 2026Q1 – 2026Q3 | 4.251 | 42,5% |
+
+**51,9%** dari seluruh percakapan terjadi hanya dalam 4 kuartal terakhir. Puncak volume kuartalan ada di **2025Q3** dengan 2.334 post.
+
+Penyebutan tool: **2.883 post (28,8%)** menyebut setidaknya satu tool secara eksplisit — dipimpin **Claude** (1.340), **Cursor** (762), dan **ChatGPT/OpenAI** (517).
 
 ### Validasi topik
 
@@ -294,9 +383,36 @@ Dua pengaman dipasang:
 
 ## 🧪 Testing
 
-> **Belum ada test otomatis di repo ini.** Verifikasi saat ini dilakukan lewat sel diagnostik di dalam notebook, bukan lewat test suite. Bagian ini mencatat kondisi sebenarnya sekaligus rencana ke depan, agar tidak menyesatkan.
+### Test otomatis
 
-### Verifikasi yang sudah berjalan
+```powershell
+python -m pytest tests/ -v
+```
+
+**22 test** mencakup lapisan data dashboard. Test yang menyentuh dataset nyata di-skip otomatis bila filenya tidak ada, sehingga suite tetap hijau di lingkungan tanpa data.
+
+Yang diuji, beserta alasannya:
+
+| Kelompok | Yang dijaga |
+|---|---|
+| **Deteksi delimiter** | `vibecoding_relevant_10000.csv` memakai `;` sementara keluaran sentimen memakai `,`; delimiter harus dideteksi, bukan diasumsikan |
+| **Normalisasi** | Baris bertanggal tidak valid dibuang, kolom periode terbentuk benar, post duplikat dihapus agar tidak membentuk spike palsu |
+| **Deteksi tool** | Batas kata dihormati, dan satu post boleh menyebut beberapa tool sekaligus |
+| **Ambang kuartal** | Kuartal bervolume mikro benar-benar dibuang — pengaman inti terhadap tren palsu |
+| **Deteksi spike** | Pertumbuhan bertahap **tidak** dianggap lonjakan, sementara anomali nyata tetap tertangkap |
+| **Agregasi sentimen** | Kuartal 1 post tidak masuk perhitungan tren; ambang `min_mentions` dipatuhi |
+| **Frekuensi istilah** | Kata kunci query (`vibe`, `coding`) dibuang karena mendominasi setiap dokumen |
+
+Dua test sengaja dibuat sebagai regresi atas jebakan metodologis yang dibahas di [Methodology](#-methodology):
+
+```python
+test_valid_quarters_filters_micro_volume    # kuartal 1-2 post harus tersingkir
+test_detect_spikes_uses_moving_baseline    # pertumbuhan ≠ lonjakan
+```
+
+> Suite ini menemukan bug nyata saat pertama dijalankan: `sentiment_by_tool()` melempar `KeyError: 'net'` ketika tidak ada tool yang memenuhi ambang, karena `sort_values` dipanggil pada DataFrame tanpa kolom. Itu akan membuat dashboard crash pada dataset kecil.
+
+### Verifikasi manual di notebook
 
 **Diagnostik topik** (sel 6b `topic_modeling.ipynb`) — skor koherensi per topik, deteksi *catch-all* otomatis, dan penandaan `SUSPECT`, disertai cetak sampel dokumen agar bisa dinilai manual.
 
@@ -327,10 +443,8 @@ Keluaran harus **kosong**.
 - Unit test `clean_text()` — penanganan URL, mention, whitespace, input non-string
 - Unit test pembagian window tanggal pada scraper
 - Test regresi filter relevansi memakai fixture kecil berlabel manual
-- Test bahwa `MIN_QUARTER_DOCS` benar-benar membuang kuartal mikro pada data sintetis
 - Sanity check konsistensi label model terhadap sampel emas kecil
-
-Kerangka yang disarankan: `pytest`, ditempatkan di `tests/`.
+- Smoke test render halaman Streamlit (mis. memakai `streamlit.testing.v1.AppTest`)
 
 ## 🤝 Contributing
 

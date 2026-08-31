@@ -1,0 +1,13 @@
+# Dependensi dashboard Streamlit.
+#
+#   pip install -r requirements-dashboard.txt
+#   streamlit run dashboard/app.py
+#
+# Dashboard hanya membaca CSV hasil olahan, jadi tidak memerlukan torch,
+# transformers, atau bertopic. Untuk menghasilkan datanya, pakai
+# requirements-analysis.txt.
+
+streamlit==1.41.1
+pandas==2.2.2
+numpy==1.26.4
+plotly==6.7.0

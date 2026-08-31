@@ -89,6 +89,9 @@ def _normalise(df: pd.DataFrame) -> pd.DataFrame:
 
     before = len(df)
     df = df[df["created_dt"].notna()].copy()
+    # Buang semua data sebelum 2025 — vibe coding baru muncul Feb 2025,
+    # post sebelum itu tidak relevan untuk narasi dashboard.
+    df = df[df["created_dt"].dt.year >= 2025]
     df = df[df["text"].notna() & (df["text"].astype(str).str.strip() != "")]
     df.attrs["dropped_invalid"] = before - len(df)
 

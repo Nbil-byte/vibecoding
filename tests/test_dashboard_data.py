@@ -94,6 +94,14 @@ def test_normalise_deduplicates_text():
     assert len(out) == 1, "post identik harus dibuang agar tidak membentuk spike palsu"
 
 
+def test_normalise_drops_pre_2025():
+    """Data sebelum 2025 harus dibuang — vibe coding baru muncul Feb 2025."""
+    df = make_df(5, start="2024-06-01")
+    df["text"] = [f"post lama {i}" for i in range(5)]
+    out = D._normalise(df)
+    assert len(out) == 0
+
+
 def test_normalise_adds_period_columns():
     out = D._normalise(make_df(5, start="2025-02-10"))
     assert out["quarter"].iloc[0] == "2025Q1"
@@ -128,13 +136,13 @@ def test_valid_quarters_filters_micro_volume():
     diperlakukan setara kuartal besar akan menghasilkan tren palsu.
     """
     big = make_df(120, start="2025-04-01")      # 2025Q2-Q3, volume besar
-    tiny = make_df(2, start="2022-04-01")       # 2022Q2, hanya 2 post
+    tiny = make_df(2, start="2025-01-01")        # 2025Q1, hanya 2 post
     tiny["text"] = ["post langka a", "post langka b"]
 
     df = D._normalise(pd.concat([big, tiny], ignore_index=True))
     quarters = D.valid_quarters(df, min_docs=30)
 
-    assert "2022Q2" not in quarters
+    assert "2025Q1" not in quarters
     assert all(df[df["quarter"] == q].shape[0] >= 30 for q in quarters)
 
 
@@ -192,14 +200,14 @@ def test_detect_spikes_finds_real_anomaly():
 def test_sentiment_by_quarter_excludes_micro_quarters():
     df = make_df(120, start="2025-04-01")
     df["sentiment"] = (["positive"] * 60) + (["negative"] * 60)
-    tiny = make_df(1, start="2022-04-01")
+    tiny = make_df(1, start="2025-01-01")
     tiny["text"] = ["satu satunya post"]
     tiny["sentiment"] = ["positive"]
 
     merged = D._normalise(pd.concat([df, tiny], ignore_index=True))
     sq = D.sentiment_by_quarter(merged, min_docs=30)
 
-    assert "2022Q2" not in set(sq["quarter"]), (
+    assert "2025Q1" not in set(sq["quarter"]), (
         "kuartal 1 post akan bernilai net +100 dan mendistorsi tren"
     )
     assert {"negative", "neutral", "positive", "net"} <= set(sq.columns)

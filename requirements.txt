@@ -1,7 +1,6 @@
 # Dashboard dependencies for Streamlit Cloud.
-# Scraping deps (twscrape, playwright) excluded — not needed to run dashboard.
 
-streamlit==1.41.1
-pandas==2.2.2
-numpy==1.26.4
-plotly==6.7.0
+streamlit
+pandas
+numpy
+plotly

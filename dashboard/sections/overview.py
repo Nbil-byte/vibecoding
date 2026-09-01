@@ -158,14 +158,34 @@ def render(df, sent, topics):
     st.markdown("")
     st.plotly_chart(_volume_story(df, sent), use_container_width=True)
 
+    # --- Metodologi pengumpulan data ---
     st.markdown(
-        f"""<div class="vc-note">
-        <strong>Cara membaca grafik ini.</strong> Batang berwarna redam adalah kuartal
-        berisi kurang dari {D.MIN_QUARTER_DOCS} post. Kuartal tersebut ditampilkan agar
-        rentang data terlihat utuh, tetapi <strong>dikecualikan dari semua perhitungan
-        tren</strong>. Alasannya: kuartal berisi satu post otomatis bernilai pangsa 100%,
-        dan bila dirata-ratakan setara kuartal berisi ribuan post, hasilnya memunculkan
-        tren palsu berskala puluhan poin persen.
+        """<div class="vc-callout method">
+        <div class="vc-callout-title">Bagaimana data dikumpulkan</div>
+        <p>Data dikumpulkan dari halaman pencarian X/Twitter memakai dua scraper:
+        <strong>Playwright</strong> (browser automation) dan <strong>twscrape</strong>
+        (API wrapper). Query utama yang dipakai:</p>
+        <p style="font-family:monospace;font-size:.8rem;background:rgba(169,135,67,0.10);
+        padding:.6rem .8rem;border-radius:6px;margin:.5rem 0">
+        (vibecoding OR "vibe coding" OR "vibe-coding" OR "vibe coded"<br>
+        OR "vibecode" OR "vibe coder" OR "ngoding pakai AI"<br>
+        OR "kode pakai AI")
+        </p>
+        <p>Playwright menjalankan <strong>10 variasi query</strong> untuk memperluas
+        cakupan, antara lain memfilter berdasarkan konteks
+        (<code>app OR website OR project OR startup</code>),
+        teknologi (<code>ai OR llm OR agent OR prompt</code>),
+        tool (<code>cursor OR windsurf OR copilot OR claude OR replit OR lovable OR bolt</code>),
+        aktivitas (<code>bug OR debug OR ship OR build OR github OR repo</code>),
+        dan bahasa (<code>lang:en</code>, <code>lang:id</code>).
+        twscrape memakai query tambahan <code>"AI coding"</code> dan
+        <code>"coding pakai AI"</code>.</p>
+        <p>Pencarian dijalankan dalam <strong>jendela tanggal 7 hari</strong> yang
+        bergeser maju, memakai filter <em>live (chronological)</em> agar post
+        diurutkan berdasarkan waktu. Duplikat dibuang setelah pengumpulan, dan
+        post disaring ulang dengan daftar 14 kata kunci relevan (termasuk varian
+        seperti <em>vibe-code</em>, <em>vibe-coded</em>, <em>vibe coders</em>,
+        <em>ngoding pakai AI</em>) untuk membuang hasil yang tidak terkait.</p>
         </div>""",
         unsafe_allow_html=True,
     )
@@ -186,7 +206,17 @@ def render(df, sent, topics):
                 unsafe_allow_html=True,
             )
 
-    st.markdown(f'<div class="vc-note">{N.CONTEXT_NOTE}</div>', unsafe_allow_html=True)
+    st.markdown(
+        f"""<div class="vc-callout info">
+        <div class="vc-callout-title">Konteks eksternal</div>
+        <p>Istilah <em>vibe coding</em> dipopulerkan Andrej Karpathy pada Februari 2025
+        dan menyebar cepat sesudahnya. Konteks ini berasal dari pengetahuan umum,
+        <strong>bukan</strong> dari dataset ini — dataset hanya dapat menunjukkan
+        <em>kapan dan bagaimana</em> percakapan bergerak, bukan siapa yang memulainya.
+        Sebaran data yang menipis sebelum 2025 konsisten dengan penanggalan tersebut.</p>
+        </div>""",
+        unsafe_allow_html=True,
+    )
 
     # --- Temuan utama ---
     st.subheader("Temuan utama")

@@ -145,7 +145,7 @@ def render(df, sent, topics):
     )
 
     st.subheader("Apa yang terjadi pada hari lonjakan")
-    st.caption("Post dengan engagement tertinggi pada tanggal terpilih.")
+    st.caption("Post paling relevan pada tanggal terpilih.")
 
     options = spikes.head(10)["date"].dt.strftime("%d %b %Y").tolist()
     pick = st.selectbox("Pilih tanggal lonjakan", options, label_visibility="collapsed")
@@ -158,13 +158,12 @@ def render(df, sent, topics):
 
     for row in ex.itertuples():
         user = getattr(row, "username", "?")
-        eng = getattr(row, "engagement", 0)
         url = getattr(row, "post_url", "")
         link = f' · <a href="{url}" target="_blank" style="color:{CERULEAN}">buka</a>' if isinstance(url, str) and url.startswith("http") else ""
         st.markdown(
             f"""<div class="vc-card" style="padding:.9rem 1.1rem">
             <div style="color:{CERULEAN};font-size:.8rem;font-weight:600">
-              @{user} · engagement {int(eng)}{link}
+              @{user}{link}
             </div>
             <p style="margin-top:.4rem">{str(row.text)[:400]}</p>
             </div>""",

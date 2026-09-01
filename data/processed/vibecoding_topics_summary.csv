@@ -1,32 +1,32 @@
-﻿Topic,Count,Name,top_words,coherence,share_%,flag
-0,895,0_mobile app_mini app_first app_app using,"mobile app, mini app, first app, app using, build apps, app built, phone, ios, mobile apps, android",0.709,9.1,ok
-1,469,1_fable_claudecode_mar claude_evals,"fable, claudecode, mar claude, evals, et, qui, 00, claude fable, claude pro, claude ai",0.651,4.8,ok
-2,371,2_gaming_gamedev_multiplayer_video game,"gaming, gamedev, multiplayer, video game, unity, jam, players, ai game, minecraft, indiedev",0.66,3.8,ok
-3,705,3_https github_claude ai_notion_في,"https github, claude ai, notion, في, ai assistant, الاصطناعي, images, generator, capabilities, assistants",0.716,7.2,ok
-4,272,4_cursor ai_using cursor_use cursor_composer,"cursor ai, using cursor, use cursor, composer, cursor agent, cursor composer, accept, o1, riley brown, brown",0.705,2.8,ok
-5,404,5_portfolio website_beautiful_seo_shopify,"portfolio website, beautiful, seo, shopify, domain, wordpress, website using, library, vercel app, chrome",0.636,4.1,ok
-6,234,6_hi_re into_re working_ai ml,"hi, re into, re working, ai ml, active, ml, building public, saas ai, people interested, grow",0.677,2.4,ok
-7,308,7_composer sonnet_jenis_bahwa_cursor composer,"composer sonnet, jenis, bahwa, cursor composer, bahkan, jenis pemrograman, eksponensial melupakan, menyerah, merangkul, kode bahkan",0.676,3.1,ok
-8,235,8_safe_vulnerabilities_0g_exposed,"safe, vulnerabilities, 0g, exposed, audit, risks, cybersecurity, hacking, hacked, inference",0.689,2.4,ok
-9,143,9_gpt codex_4o_overall_uso,"gpt codex, 4o, overall, uso, benchmarks, chat gpt, claude gpt, gpu, release, k3",0.678,1.5,ok
-10,229,10_000 000_revenue_arr_dollar,"000 000, revenue, arr, dollar, lain, silakan coba, video browser, silakan, memainkan video, kami dapat",0.685,2.3,ok
-11,185,11_flash_gemini flash_gemini cli_neo,"flash, gemini flash, gemini cli, neo, deepseek, supply, rocket, ambassador, tier, tersedia",0.638,1.9,ok
-12,373,12_luma_stream_bootcamp_camp,"luma, stream, bootcamp, camp, 00, join us, mini app, streaming, live stream, livestream",0.646,3.8,ok
-13,136,13_crm_ai saas_replace_inc,"crm, ai saas, replace, inc, saas ai, gtm, bi, kit, requires, tier",0.692,1.4,ok
-14,133,14_apple_ios_iphone_swift,"apple, ios, iphone, swift, removed, scared, android, removing, rork, moved",0.7,1.4,ok
-15,461,15_ritual_music_aura_compile,"ritual, music, aura, compile, youre, gif, definition, speak, arena, maintain",0.74,4.7,ok
-16,467,16_build anything_fundamentals_passion_new project,"build anything, fundamentals, passion, new project, first project, re doing, designing, project without, resources, effort",0.706,4.7,ok
-17,142,17_google ai_multiplayer_19 mar_upgraded,"google ai, multiplayer, 19 mar, upgraded, mar artikel, experiences, prompts into, into production, stitch, day ai",0.722,1.4,ok
-18,678,18_almanak_replace_strategies_ai isn,"almanak, replace, strategies, ai isn, swarm, ai era, ai product, hal, growing, ai startup",0.694,6.9,ok
-19,403,19_knows_addictive_claude md_chaos,"knows, addictive, claude md, chaos, composer, teach, llm generated, debt, opinion, communicate",0.718,4.1,ok
-20,163,20_icp_bitcoin_engines_sovereign,"icp, bitcoin, engines, sovereign, blockchain, financial, freedom, decentralized, coins, decade",0.625,1.7,ok
-21,111,21_funding_ai startup_raised_round,"funding, ai startup, raised, round, base44, wix, arr, raises, raise, nvidia",0.646,1.1,ok
-22,480,22_ai write_stupid_torvalds_ai writes,"ai write, stupid, torvalds, ai writes, let ai, ai without, weird, linus, answer, fixed",0.743,4.9,ok
-23,383,23_hiring_ston fi_ston_agentic engineering,"hiring, ston fi, ston, agentic engineering, fi, http ston, front end, vc, fi hackathon, training",0.655,3.9,ok
-24,117,24_dreamspace_codexero_sei_chain,"dreamspace, codexero, sei, chain, monetize, solidity, protocol, canvas, dapps, app minutes",0.661,1.2,ok
-25,91,25_git_github copilot_commit_cons,"git, github copilot, commit, cons, spark, idea app, pros, fresh, trends, https github",0.673,0.9,ok
-26,356,26_sort_jun day_array_trace,"sort, jun day, array, trace, feb claude, peak, logs, tonight, coba, listening",0.657,3.6,ok
-27,408,27_moat_hard part_não_revolution,"moat, hard part, não, revolution, revenue, accelerator, truth, hal, retention, world where",0.645,4.1,ok
-28,80,28_mcp server_mcp servers_servers_inco,"mcp server, mcp servers, servers, inco, mcps, kiro, cline, swe, stacks, fork",0.68,0.8,ok
-29,342,29_driven development_ai build_difference between_assisted development,"driven development, ai build, difference between, assisted development, software engineering, drive, intuition, tests, ai write, spec driven",0.757,3.5,ok
-30,73,30_web3 ai_seedify_infinity ground_infinity,"web3 ai, seedify, infinity ground, infinity, chain, ground, web3 app, ain, app development, redefining",0.715,0.7,ok
+﻿Topic;Count;Name;top_words;coherence;share_%;flag
+0;895;Membangun Mobile App & Mini App;mobile app, mini app, first app, app using, build apps, app built, phone, ios, mobile apps, android;0.709;9.1;ok
+1;469;Claude Fable, ClaudeCode & Evaluasi Model;fable, claudecode, mar claude, evals, et, qui, 00, claude fable, claude pro, claude ai;0.651;4.8;ok
+2;371;Game Development & AI dalam Gaming;gaming, gamedev, multiplayer, video game, unity, jam, players, ai game, minecraft, indiedev;0.66;3.8;ok
+3;705;AI Assistant Serbaguna (Claude, GitHub, Notion);https github, claude ai, notion, في, ai assistant, الاصطناعي, images, generator, capabilities, assistants;0.716;7.2;ok
+4;272;Cursor AI sebagai Coding Assistant;cursor ai, using cursor, use cursor, composer, cursor agent, cursor composer, accept, o1, riley brown, brown;0.705;2.8;ok
+5;404;Website Portofolio & E-commerce (SEO, Shopify, WordPress);portfolio website, beautiful, seo, shopify, domain, wordpress, website using, library, vercel app, chrome;0.636;4.1;ok
+6;234;Perkenalan & Building in Public (AI/ML);hi, re into, re working, ai ml, active, ml, building public, saas ai, people interested, grow;0.677;2.4;ok
+7;308;Diskusi ID: AI dalam Pemrograman (Sonnet, Cursor Composer);composer sonnet, jenis, bahwa, cursor composer, bahkan, jenis pemrograman, eksponensial melupakan, menyerah, merangkul, kode bahkan;0.676;3.1;ok
+8;235;Keamanan Siber & Kerentanan AI;safe, vulnerabilities, 0g, exposed, audit, risks, cybersecurity, hacking, hacked, inference;0.689;2.4;ok
+9;143;Perbandingan Model AI (GPT, Codex, Benchmark);gpt codex, 4o, overall, uso, benchmarks, chat gpt, claude gpt, gpu, release, k3;0.678;1.5;ok
+10;229;Promosi Produk & Revenue (Konten ID);000 000, revenue, arr, dollar, lain, silakan coba, video browser, silakan, memainkan video, kami dapat;0.685;2.3;ok
+11;185;Gemini Flash, DeepSeek & Model AI Lain;flash, gemini flash, gemini cli, neo, deepseek, supply, rocket, ambassador, tier, tersedia;0.638;1.9;ok
+12;373;Live Stream, Bootcamp & Event Komunitas;luma, stream, bootcamp, camp, 00, join us, mini app, streaming, live stream, livestream;0.646;3.8;ok
+13;136;AI SaaS & CRM untuk Startup;crm, ai saas, replace, inc, saas ai, gtm, bi, kit, requires, tier;0.692;1.4;ok
+14;133;Apple, iOS & Swift Development;apple, ios, iphone, swift, removed, scared, android, removing, rork, moved;0.7;1.4;ok
+15;461;Topik Campuran: Musik, Ritual & Aura (perlu ditinjau manual);ritual, music, aura, compile, youre, gif, definition, speak, arena, maintain;0.74;4.7;ok
+16;467;Motivasi Memulai Proyek & Belajar Fundamental;build anything, fundamentals, passion, new project, first project, re doing, designing, project without, resources, effort;0.706;4.7;ok
+17;142;Google AI: Update Produk & Fitur Multiplayer;google ai, multiplayer, 19 mar, upgraded, mar artikel, experiences, prompts into, into production, stitch, day ai;0.722;1.4;ok
+18;678;Strategi Bisnis di Era AI (AI Startup, Almanak);almanak, replace, strategies, ai isn, swarm, ai era, ai product, hal, growing, ai startup;0.694;6.9;ok
+19;403;Opini: Ketergantungan pada AI Coding (Claude.md, Technical Debt);knows, addictive, claude md, chaos, composer, teach, llm generated, debt, opinion, communicate;0.718;4.1;ok
+20;163;Blockchain, Bitcoin & Kebebasan Finansial (Web3);icp, bitcoin, engines, sovereign, blockchain, financial, freedom, decentralized, coins, decade;0.625;1.7;ok
+21;111;Pendanaan Startup AI (Funding Round);funding, ai startup, raised, round, base44, wix, arr, raises, raise, nvidia;0.646;1.1;ok
+22;480;Perdebatan: AI Menulis Kode vs Manusia (Linus Torvalds);ai write, stupid, torvalds, ai writes, let ai, ai without, weird, linus, answer, fixed;0.743;4.9;ok
+23;383;Hiring & Agentic Engineering (Hackathon Ston.fi);hiring, ston fi, ston, agentic engineering, fi, http ston, front end, vc, fi hackathon, training;0.655;3.9;ok
+24;117;Proyek Web3/dApps (DreamSpace, CodeXero, Sei Chain);dreamspace, codexero, sei, chain, monetize, solidity, protocol, canvas, dapps, app minutes;0.661;1.2;ok
+25;91;Git, GitHub Copilot & Tools Coding;git, github copilot, commit, cons, spark, idea app, pros, fresh, trends, https github;0.673;0.9;ok
+26;356;Algoritma & Struktur Data (Sorting, Array);sort, jun day, array, trace, feb claude, peak, logs, tonight, coba, listening;0.657;3.6;ok
+27;408;Strategi Bisnis: Moat, Revenue & Retention;moat, hard part, não, revolution, revenue, accelerator, truth, hal, retention, world where;0.645;4.1;ok
+28;80;MCP Server & Tooling AI (Kiro, Cline);mcp server, mcp servers, servers, inco, mcps, kiro, cline, swe, stacks, fork;0.68;0.8;ok
+29;342;Spec-Driven vs AI-Assisted Development;driven development, ai build, difference between, assisted development, software engineering, drive, intuition, tests, ai write, spec driven;0.757;3.5;ok
+30;73;Web3 AI & Proyek Blockchain (Seedify);web3 ai, seedify, infinity ground, infinity, chain, ground, web3 app, ain, app development, redefining;0.715;0.7;ok

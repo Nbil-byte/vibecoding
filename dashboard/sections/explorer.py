@@ -10,21 +10,6 @@ from ..narrative import _fmt, _pct
 from ..theme import CERULEAN, DARK_SLATE, kpi
 
 
-def _engagement_chart(df):
-    fig = go.Figure()
-    fig.add_histogram(
-        x=df["engagement"].clip(upper=df["engagement"].quantile(0.98)),
-        nbinsx=45, marker=dict(color=CERULEAN, line=dict(width=0)),
-        hovertemplate="engagement %{x}<br>%{y} post<extra></extra>",
-    )
-    fig.update_layout(
-        title="Sebaran engagement (dipotong pada persentil 98)",
-        height=320, xaxis_title="likes + repost + reply", yaxis_title="jumlah post",
-        showlegend=False,
-    )
-    return fig
-
-
 def render(df, sent, topics):
     st.header("Penjelajah data")
     st.caption(
@@ -33,7 +18,7 @@ def render(df, sent, topics):
     )
 
     # --- Filter ---
-    f = st.columns([1.1, 1.1, 1, 1])
+    f = st.columns([1.2, 1.2, 1])
     quarters = sorted(df["quarter"].unique())
     q_pick = f[0].multiselect("Kuartal", quarters, default=[])
 
@@ -48,8 +33,6 @@ def render(df, sent, topics):
         help=None if has_sent else "Gabungkan data berlabel untuk mengaktifkan",
     )
 
-    min_eng = f[3].number_input("Engagement minimum", min_value=0, value=0, step=10)
-
     query = st.text_input("Cari dalam teks", placeholder="mis. production, refactor, bug")
 
     # --- Terapkan filter ---
@@ -61,31 +44,25 @@ def render(df, sent, topics):
         view = view[mask]
     if s_pick and has_sent:
         view = view[view["sentiment"].isin(s_pick)]
-    if min_eng:
-        view = view[view["engagement"] >= min_eng]
     if query.strip():
         view = view[
             view["text"].astype(str).str.contains(query.strip(), case=False, na=False)
         ]
 
     # --- Ringkasan ---
-    c = st.columns(4)
+    c = st.columns(3)
     c[0].markdown(
         kpi("Post terfilter", _fmt(len(view)),
             f"{_pct(len(view) / len(df) * 100)} dari {_fmt(len(df))}"),
         unsafe_allow_html=True)
     c[1].markdown(
-        kpi("Median engagement",
-            f"{view['engagement'].median():.0f}" if len(view) else "—",
-            variant="cerulean"), unsafe_allow_html=True)
-    c[2].markdown(
         kpi("Akun unik",
             _fmt(view["username"].nunique()) if "username" in view and len(view) else "—",
-            variant="tuscan"), unsafe_allow_html=True)
-    c[3].markdown(
+            variant="cerulean"), unsafe_allow_html=True)
+    c[2].markdown(
         kpi("Rentang",
             f"{view['created_dt'].min():%b %Y} – {view['created_dt'].max():%b %Y}"
-            if len(view) else "—"), unsafe_allow_html=True)
+            if len(view) else "—", variant="tuscan"), unsafe_allow_html=True)
 
     if not len(view):
         st.markdown(
@@ -94,11 +71,10 @@ def render(df, sent, topics):
         return
 
     st.markdown("")
-    st.plotly_chart(_engagement_chart(view), use_container_width=True)
 
     # --- Tabel ---
     cols = [c for c in (
-        "created_dt", "username", "text", "engagement",
+        "created_dt", "username", "text",
         "like_count", "retweet_count", "reply_count", "sentiment", "sentiment_score",
     ) if c in view.columns]
 
@@ -108,7 +84,7 @@ def render(df, sent, topics):
     st.dataframe(
         table.rename(columns={
             "created_dt": "Waktu", "username": "Akun", "text": "Teks",
-            "engagement": "Engagement", "like_count": "Like",
+            "like_count": "Like",
             "retweet_count": "Repost", "reply_count": "Reply",
             "sentiment": "Sentimen", "sentiment_score": "Keyakinan",
         }),
@@ -127,7 +103,7 @@ def render(df, sent, topics):
         st.subheader("Akun paling aktif")
         top = (
             view.groupby("username")
-            .agg(post=("text", "size"), engagement=("engagement", "sum"))
+            .agg(post=("text", "size"))
             .sort_values("post", ascending=False)
             .head(15)
             .reset_index()

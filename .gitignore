@@ -13,6 +13,9 @@ cookies*.json
 sessions/
 data/raw/*
 !data/raw/.gitkeep
+!data/raw/vibecoding_relevant_10000.csv
+!data/raw/vibecoding_sentimen_1000.csv
+!data/raw/vibecoding_sentimen_1000_2000.csv
 .DS_Store
 Thumbs.db
 .vscode/

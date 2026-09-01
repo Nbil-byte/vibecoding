@@ -45,7 +45,6 @@ def headline_stats(df: pd.DataFrame, sent: pd.DataFrame) -> dict:
         "tool_mentions": int(df["tool_any"].sum()) if "tool_any" in df else 0,
         "top_tool": tools.iloc[0]["tool"] if len(tools) else "—",
         "top_tool_n": int(tools.iloc[0]["mentions"]) if len(tools) else 0,
-        "median_engagement": float(df["engagement"].median()),
         "sent_coverage": len(sent),
     }
 

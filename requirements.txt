@@ -1,8 +1,6 @@
-# Dependencies for scraping pipeline
-# Dashboard also needs streamlit, plotly, etc. so Streamlit Cloud can run it.
+# Dashboard dependencies for Streamlit Cloud.
+# Scraping deps (twscrape, playwright) excluded — not needed to run dashboard.
 
-twscrape==0.17.0
-playwright==1.52.0
 streamlit==1.41.1
 pandas==2.2.2
 numpy==1.26.4

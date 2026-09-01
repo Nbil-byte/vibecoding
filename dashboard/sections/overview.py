@@ -8,12 +8,12 @@ import streamlit as st
 from .. import data as D
 from .. import narrative as N
 from ..theme import (
-    BLAZE,
-    FLAME,
-    LINE,
-    NEON_ICE,
-    RUSTY,
-    SURFACE,
+    CERULEAN,
+    DARK_SLATE,
+    GOLDENROD,
+    NEGATIVE,
+    TUSCAN,
+    BORDER,
     era_card,
     kpi,
 )
@@ -34,7 +34,7 @@ def _volume_story(df, sent):
             x=sparse["quarter"],
             y=sparse["posts"],
             name=f"< {D.MIN_QUARTER_DOCS} post (dikecualikan)",
-            marker=dict(color=LINE, line=dict(color=RUSTY, width=1)),
+            marker=dict(color=BORDER, line=dict(color=GOLDENROD, width=1)),
             hovertemplate="%{x}<br>%{y} post<br><i>dikecualikan dari tren</i><extra></extra>",
         )
 
@@ -44,7 +44,7 @@ def _volume_story(df, sent):
         name="Volume post",
         marker=dict(
             color=valid["posts"],
-            colorscale=[[0, RUSTY], [0.5, FLAME], [1, BLAZE]],
+            colorscale=[[0, "#6B9AAB"], [0.5, CERULEAN], [1, DARK_SLATE]],
             line=dict(width=0),
         ),
         hovertemplate="%{x}<br><b>%{y} post</b><extra></extra>",
@@ -59,8 +59,8 @@ def _volume_story(df, sent):
                 name="Net sentiment (pp)",
                 yaxis="y2",
                 mode="lines+markers",
-                line=dict(color=NEON_ICE, width=2.5, shape="spline"),
-                marker=dict(size=7, color=NEON_ICE, line=dict(color=SURFACE, width=1.5)),
+                line=dict(color=TUSCAN, width=2.5, shape="spline"),
+                marker=dict(size=7, color=TUSCAN, line=dict(color="#FFFFFF", width=1.5)),
                 hovertemplate="%{x}<br>net %{y:+.1f} pp<extra></extra>",
             )
             fig.update_layout(
@@ -70,8 +70,8 @@ def _volume_story(df, sent):
                     title="net sentiment (pp)",
                     gridcolor="rgba(0,0,0,0)",
                     zeroline=True,
-                    zerolinecolor=LINE,
-                    tickfont=dict(color=NEON_ICE),
+                    zerolinecolor="rgba(37,89,87,0.12)",
+                    tickfont=dict(color=TUSCAN),
                 )
             )
 
@@ -83,10 +83,10 @@ def _volume_story(df, sent):
             text=f"puncak · {int(peak['posts'])}",
             showarrow=True,
             arrowhead=0,
-            arrowcolor=NEON_ICE,
+            arrowcolor=TUSCAN,
             ax=0,
             ay=-32,
-            font=dict(color=NEON_ICE, size=11),
+            font=dict(color=TUSCAN, size=11),
         )
 
     fig.update_layout(
@@ -105,12 +105,13 @@ def render(df, sent, topics):
     st.markdown(
         f"""
         <div class="vc-hero">
+          <span class="vc-badge">{stats['start']:%b %Y} – {stats['end']:%b %Y}</span>
+          <span class="vc-badge accent">{N._fmt(stats['total'])} post</span>
           <div class="vc-hero-title">Dari Meme ke Metodologi</div>
           <p class="vc-hero-sub">
             Bagaimana <strong>vibe coding</strong> berpindah dari lelucon di timeline
             menjadi cara kerja yang diperdebatkan secara serius — dilacak lewat
-            {N._fmt(stats['total'])} post X/Twitter,
-            {stats['start']:%b %Y} sampai {stats['end']:%b %Y}.
+            {N._fmt(stats['total'])} post X/Twitter.
           </p>
         </div>
         """,
@@ -127,7 +128,7 @@ def render(df, sent, topics):
     c[1].markdown(
         kpi("Kuartal puncak", str(stats["peak_quarter"]),
             f"{N._fmt(stats['peak_posts'])} post",
-            variant="ice", direction="up"),
+            variant="tuscan", direction="up"),
         unsafe_allow_html=True,
     )
     growth = (
@@ -137,7 +138,7 @@ def render(df, sent, topics):
     )
     c[2].markdown(
         kpi("Pertumbuhan puncak", growth,
-            f"sejak {stats['first_valid_quarter']}", variant="turq", direction="up"),
+            f"sejak {stats['first_valid_quarter']}", variant="cerulean", direction="up"),
         unsafe_allow_html=True,
     )
     if len(sent):
@@ -145,12 +146,12 @@ def render(df, sent, topics):
         c[3].markdown(
             kpi("Net sentiment", f"{stats['net']:+.1f}",
                 f"dari {N._fmt(len(sent))} post berlabel",
-                variant="turq" if stats["net"] >= 0 else "rust", direction=arah),
+                variant="cerulean" if stats["net"] >= 0 else "negative", direction=arah),
             unsafe_allow_html=True,
         )
     else:
         c[3].markdown(
-            kpi("Net sentiment", "—", "belum ada data berlabel", variant="rust"),
+            kpi("Net sentiment", "—", "belum ada data berlabel", variant="negative"),
             unsafe_allow_html=True,
         )
 

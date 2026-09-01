@@ -30,8 +30,8 @@ from dashboard.sections import (  # noqa: E402
 )
 from dashboard.theme import (  # noqa: E402
     CSS,
-    NEON_ICE,
-    TEXT_MUTED,
+    TUSCAN,
+    TEXT_SECONDARY,
     register_template,
 )
 
@@ -73,11 +73,11 @@ def _merge_sentiment(df: pd.DataFrame, sent: pd.DataFrame) -> pd.DataFrame:
 def main() -> None:
     with st.sidebar:
         st.markdown(
-            f"""<div style="margin-bottom:1.2rem">
-              <div style="font-size:1.05rem;font-weight:700;color:{NEON_ICE}">
-                ◆ VIBE CODING
+            f"""<div style="margin-bottom:1.4rem">
+              <div style="font-size:1.1rem;font-weight:700;color:{TUSCAN};letter-spacing:.02em">
+                VIBE CODING
               </div>
-              <div style="font-size:.78rem;color:{TEXT_MUTED};letter-spacing:.04em">
+              <div style="font-size:.76rem;color:rgba(238,235,211,0.7);letter-spacing:.03em;margin-top:.15rem">
                 analisis diskursus X/Twitter
               </div>
             </div>""",
@@ -116,7 +116,7 @@ def main() -> None:
     with st.sidebar:
         st.caption("Sumber data")
         st.markdown(
-            f"""<div style="font-size:.78rem;color:{TEXT_MUTED};line-height:1.75">
+            f"""<div style="font-size:.78rem;color:rgba(238,235,211,0.75);line-height:1.8">
               <div><b>{df.attrs.get('source', '—')}</b></div>
               <div>{len(df):,} post valid</div>
               <div>{df['created_dt'].min():%b %Y} – {df['created_dt'].max():%b %Y}</div>

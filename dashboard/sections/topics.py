@@ -8,13 +8,14 @@ import streamlit as st
 from .. import data as D
 from ..narrative import _fmt, _pct
 from ..theme import (
-    BLAZE,
     CATEGORICAL,
-    FLAME,
+    CERULEAN,
+    DARK_SLATE,
+    GOLDENROD,
     HEAT_SCALE,
-    RUSTY,
-    SURFACE,
-    TURQUOISE,
+    NEGATIVE,
+    SURFACE_STRONG,
+    TUSCAN,
     kpi,
 )
 
@@ -62,7 +63,7 @@ def _terms_chart(terms):
         x=terms["count"], y=terms["term"], orientation="h",
         marker=dict(
             color=terms["count"],
-            colorscale=[[0, RUSTY], [0.5, FLAME], [1, BLAZE]],
+            colorscale=[[0, GOLDENROD], [0.5, CERULEAN], [1, DARK_SLATE]],
         ),
         hovertemplate="<b>%{y}</b><br>%{x} kemunculan<extra></extra>",
     )
@@ -92,25 +93,25 @@ def _render_bertopic(topics):
         c[0].markdown(kpi("Topik ditemukan", str(n_topics)), unsafe_allow_html=True)
         c[1].markdown(
             kpi("Ditandai meragukan", str(flagged),
-                "tidak koheren atau catch-all", variant="rust"), unsafe_allow_html=True)
+                "tidak koheren atau catch-all", variant="negative"), unsafe_allow_html=True)
         if diag is not None and "coherence" in diag.columns:
             c[2].markdown(
                 kpi("Koherensi median", f"{diag['coherence'].median():.3f}",
-                    "cosine ke centroid", variant="turq"), unsafe_allow_html=True)
+                    "cosine ke centroid", variant="cerulean"), unsafe_allow_html=True)
 
         st.dataframe(summary, use_container_width=True, hide_index=True)
 
     if diag is not None and len(diag) and {"coherence", "n"} <= set(diag.columns):
         colors = [
-            RUSTY if (f != "ok") else TURQUOISE
+            NEGATIVE if (f != "ok") else CERULEAN
             for f in diag.get("flag", ["ok"] * len(diag))
         ]
         fig = go.Figure()
         fig.add_scatter(
             x=diag["coherence"], y=diag["n"], mode="markers+text",
             text=diag["topic"] if "topic" in diag.columns else None,
-            textposition="middle center", textfont=dict(size=9, color=SURFACE),
-            marker=dict(size=26, color=colors, line=dict(color=SURFACE, width=1.5)),
+            textposition="middle center", textfont=dict(size=9, color=SURFACE_STRONG),
+            marker=dict(size=26, color=colors, line=dict(color=SURFACE_STRONG, width=1.5)),
             hovertemplate="topik %{text}<br>koherensi %{x:.3f}<br>n = %{y}<extra></extra>",
         )
         fig.update_layout(
@@ -184,10 +185,10 @@ def render(df, sent, topics):
         kpi("Post menyebut tool", _fmt(total_tool),
             f"{_pct(total_tool / len(df) * 100)} dari total"), unsafe_allow_html=True)
     c[1].markdown(
-        kpi("Tool terdeteksi", str(len(counts)), variant="turq"), unsafe_allow_html=True)
+        kpi("Tool terdeteksi", str(len(counts)), variant="cerulean"), unsafe_allow_html=True)
     c[2].markdown(
         kpi("Paling banyak dibahas", counts.iloc[0]["tool"],
-            f"{_fmt(counts.iloc[0]['mentions'])} penyebutan", variant="ice"),
+            f"{_fmt(counts.iloc[0]['mentions'])} penyebutan", variant="tuscan"),
         unsafe_allow_html=True)
     c[3].markdown(
         kpi("Konsentrasi 3 teratas",

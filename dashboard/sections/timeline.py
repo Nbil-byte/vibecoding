@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from .. import data as D
-from ..theme import BLAZE, FLAME, LINE, NEON_ICE, SURFACE, TURQUOISE, kpi
+from ..theme import CERULEAN, DARK_SLATE, GOLDENROD, NEGATIVE, TUSCAN, BORDER, kpi
 
 
 def _daily_chart(df, spikes):
@@ -15,11 +15,11 @@ def _daily_chart(df, spikes):
     fig = go.Figure()
     fig.add_bar(
         x=g["date"], y=g["posts"], name="post harian",
-        marker=dict(color=LINE), hovertemplate="%{x|%d %b %Y}<br>%{y} post<extra></extra>",
+        marker=dict(color="rgba(67,124,144,0.25)"), hovertemplate="%{x|%d %b %Y}<br>%{y} post<extra></extra>",
     )
     fig.add_scatter(
         x=g["date"], y=g["ma7"], name="rata-rata 7 hari",
-        mode="lines", line=dict(color=BLAZE, width=2.2),
+        mode="lines", line=dict(color=CERULEAN, width=2.2),
         hovertemplate="%{x|%d %b %Y}<br>MA7 %{y:.1f}<extra></extra>",
     )
     if len(spikes):
@@ -27,8 +27,8 @@ def _daily_chart(df, spikes):
             x=spikes["date"], y=spikes["posts"], name="lonjakan (z ≥ 2,5)",
             mode="markers",
             marker=dict(
-                size=11, color=NEON_ICE, symbol="diamond",
-                line=dict(color=SURFACE, width=1.5),
+                size=11, color=TUSCAN, symbol="diamond",
+                line=dict(color="#FFFFFF", width=1.5),
             ),
             hovertemplate="%{x|%d %b %Y}<br><b>%{y} post</b><br>lonjakan<extra></extra>",
         )
@@ -46,8 +46,8 @@ def _adoption_chart(df):
     fig = go.Figure()
     fig.add_scatter(
         x=qv["quarter"], y=qv["cumulative"], name="kumulatif",
-        mode="lines", fill="tozeroy", line=dict(color=TURQUOISE, width=2.5, shape="spline"),
-        fillcolor="rgba(0,207,193,0.14)",
+        mode="lines", fill="tozeroy", line=dict(color=DARK_SLATE, width=2.5, shape="spline"),
+        fillcolor="rgba(37,89,87,0.10)",
         hovertemplate="%{x}<br>kumulatif %{y}<extra></extra>",
     )
     fig.update_layout(
@@ -61,13 +61,13 @@ def _growth_chart(df):
     qv = D.quarter_volume(df)
     qv = qv[qv["posts"] >= D.MIN_QUARTER_DOCS].dropna(subset=["growth_%"])
 
-    colors = [TURQUOISE if v >= 0 else FLAME for v in qv["growth_%"]]
+    colors = [CERULEAN if v >= 0 else NEGATIVE for v in qv["growth_%"]]
     fig = go.Figure()
     fig.add_bar(
         x=qv["quarter"], y=qv["growth_%"], marker=dict(color=colors),
         hovertemplate="%{x}<br>%{y:+.1f}%<extra></extra>",
     )
-    fig.add_hline(y=0, line=dict(color=LINE, width=1))
+    fig.add_hline(y=0, line=dict(color="rgba(37,89,87,0.12)", width=1))
     fig.update_layout(
         title="Pertumbuhan volume antar kuartal (%)",
         height=340, yaxis_title="perubahan (%)", showlegend=False,
@@ -95,10 +95,10 @@ def render(df, sent, topics):
             f"{active_days} hari ada aktivitas"), unsafe_allow_html=True)
     c[1].markdown(
         kpi("Hari tersibuk", f"{busiest['posts']:.0f} post",
-            f"{busiest['date']:%d %b %Y}", variant="ice"), unsafe_allow_html=True)
+            f"{busiest['date']:%d %b %Y}", variant="tuscan"), unsafe_allow_html=True)
     c[2].markdown(
         kpi("Lonjakan terdeteksi", str(len(spikes)),
-            "z ≥ 2,5 vs baseline 28 hari", variant="turq"), unsafe_allow_html=True)
+            "z ≥ 2,5 vs baseline 28 hari", variant="cerulean"), unsafe_allow_html=True)
     c[3].markdown(
         kpi("Median harian", f"{daily['posts'].median():.0f} post",
             f"puncak kuartal {qv.loc[qv['posts'].idxmax(), 'quarter']}"),
@@ -160,10 +160,10 @@ def render(df, sent, topics):
         user = getattr(row, "username", "?")
         eng = getattr(row, "engagement", 0)
         url = getattr(row, "post_url", "")
-        link = f' · <a href="{url}" target="_blank" style="color:{TURQUOISE}">buka</a>' if isinstance(url, str) and url.startswith("http") else ""
+        link = f' · <a href="{url}" target="_blank" style="color:{CERULEAN}">buka</a>' if isinstance(url, str) and url.startswith("http") else ""
         st.markdown(
             f"""<div class="vc-card" style="padding:.9rem 1.1rem">
-            <div style="color:{BLAZE};font-size:.8rem;font-weight:600">
+            <div style="color:{CERULEAN};font-size:.8rem;font-weight:600">
               @{user} · engagement {int(eng)}{link}
             </div>
             <p style="margin-top:.4rem">{str(row.text)[:400]}</p>

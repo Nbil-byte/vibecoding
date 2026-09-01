@@ -7,14 +7,14 @@ import streamlit as st
 
 from .. import data as D
 from ..narrative import _fmt, _pct
-from ..theme import BLAZE, TURQUOISE, kpi
+from ..theme import CERULEAN, DARK_SLATE, kpi
 
 
 def _engagement_chart(df):
     fig = go.Figure()
     fig.add_histogram(
         x=df["engagement"].clip(upper=df["engagement"].quantile(0.98)),
-        nbinsx=45, marker=dict(color=BLAZE, line=dict(width=0)),
+        nbinsx=45, marker=dict(color=CERULEAN, line=dict(width=0)),
         hovertemplate="engagement %{x}<br>%{y} post<extra></extra>",
     )
     fig.update_layout(
@@ -77,11 +77,11 @@ def render(df, sent, topics):
     c[1].markdown(
         kpi("Median engagement",
             f"{view['engagement'].median():.0f}" if len(view) else "—",
-            variant="turq"), unsafe_allow_html=True)
+            variant="cerulean"), unsafe_allow_html=True)
     c[2].markdown(
         kpi("Akun unik",
             _fmt(view["username"].nunique()) if "username" in view and len(view) else "—",
-            variant="ice"), unsafe_allow_html=True)
+            variant="tuscan"), unsafe_allow_html=True)
     c[3].markdown(
         kpi("Rentang",
             f"{view['created_dt'].min():%b %Y} – {view['created_dt'].max():%b %Y}"
@@ -135,7 +135,7 @@ def render(df, sent, topics):
         fig = go.Figure()
         fig.add_bar(
             x=top["post"], y=top["username"], orientation="h",
-            marker=dict(color=TURQUOISE),
+            marker=dict(color=DARK_SLATE),
             hovertemplate="<b>@%{y}</b><br>%{x} post<extra></extra>",
         )
         fig.update_layout(

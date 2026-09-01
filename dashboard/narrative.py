@@ -14,7 +14,7 @@ from __future__ import annotations
 import pandas as pd
 
 from . import data as D
-from .theme import BLAZE, FLAME, RUSTY, TURQUOISE
+from .theme import CERULEAN, DARK_SLATE, GOLDENROD, NEGATIVE, TUSCAN
 
 
 def _fmt(n: float) -> str:
@@ -104,7 +104,7 @@ def build_eras(df: pd.DataFrame, sent: pd.DataFrame) -> list[dict]:
         eras.append(
             {
                 "tag": "Prasejarah",
-                "color": RUSTY,
+                "color": GOLDENROD,
                 "title": f"{sparse.iloc[0]['quarter']} – {sparse.iloc[-1]['quarter']}"
                 f" · {_fmt(sparse['posts'].sum())} post",
                 "body": (
@@ -127,9 +127,9 @@ def build_eras(df: pd.DataFrame, sent: pd.DataFrame) -> list[dict]:
     cut1 = max(1, n // 3)
     cut2 = max(cut1 + 1, (2 * n) // 3)
     phases = [
-        ("Ledakan", FLAME, valid.iloc[:cut1]),
-        ("Arus utama", BLAZE, valid.iloc[cut1:cut2]),
-        ("Pendewasaan", TURQUOISE, valid.iloc[cut2:]),
+        ("Ledakan", CERULEAN, valid.iloc[:cut1]),
+        ("Arus utama", DARK_SLATE, valid.iloc[cut1:cut2]),
+        ("Pendewasaan", TUSCAN, valid.iloc[cut2:]),
     ]
 
     sq = D.sentiment_by_quarter(sent) if len(sent) else pd.DataFrame()

@@ -8,14 +8,14 @@ import streamlit as st
 from .. import data as D
 from ..narrative import _fmt, _pct
 from ..theme import (
-    LINE,
-    NEON_ICE,
-    NEUTRAL,
-    RUSTY,
+    BORDER,
+    CERULEAN,
+    GOLDENROD,
+    NEGATIVE,
     SENTIMENT_COLORS,
     SENTIMENT_ORDER,
-    SURFACE,
-    TURQUOISE,
+    SURFACE_STRONG,
+    TUSCAN,
     kpi,
 )
 
@@ -33,7 +33,7 @@ def _donut(sent):
             hole=0.62,
             marker=dict(
                 colors=[SENTIMENT_COLORS[s] for s in order],
-                line=dict(color=SURFACE, width=2),
+                line=dict(color=SURFACE_STRONG, width=2),
             ),
             textinfo="percent",
             textfont=dict(size=13),
@@ -46,7 +46,7 @@ def _donut(sent):
     fig.add_annotation(
         text=f"<b>{net:+.1f}</b><br><span style='font-size:11px'>net</span>",
         showarrow=False,
-        font=dict(size=22, color=NEON_ICE if net >= 0 else RUSTY),
+        font=dict(size=22, color=TUSCAN if net >= 0 else NEGATIVE),
     )
     fig.update_layout(title="Distribusi sentimen", height=340, showlegend=True)
     return fig
@@ -63,8 +63,8 @@ def _quarter_chart(sq):
             )
     fig.add_scatter(
         x=sq["quarter"], y=sq["net"], name="Net", yaxis="y2", mode="lines+markers",
-        line=dict(color=NEON_ICE, width=2.5, shape="spline"),
-        marker=dict(size=7, color=NEON_ICE, line=dict(color=SURFACE, width=1.5)),
+        line=dict(color=TUSCAN, width=2.5, shape="spline"),
+        marker=dict(size=7, color=TUSCAN, line=dict(color=SURFACE_STRONG, width=1.5)),
         hovertemplate="%{x}<br>net %{y:+.1f} pp<extra></extra>",
     )
     fig.update_layout(
@@ -72,8 +72,8 @@ def _quarter_chart(sq):
         barmode="stack", height=420, yaxis_title="pangsa (%)",
         yaxis2=dict(
             overlaying="y", side="right", title="net (pp)",
-            gridcolor="rgba(0,0,0,0)", zeroline=True, zerolinecolor=LINE,
-            tickfont=dict(color=NEON_ICE),
+            gridcolor="rgba(0,0,0,0)", zeroline=True, zerolinecolor="rgba(37,89,87,0.12)",
+            tickfont=dict(color=TUSCAN),
         ),
         legend=dict(orientation="h", y=1.12, x=0),
     )
@@ -81,7 +81,7 @@ def _quarter_chart(sq):
 
 
 def _tool_chart(st_tool):
-    colors = [TURQUOISE if v >= 0 else RUSTY for v in st_tool["net"]]
+    colors = [CERULEAN if v >= 0 else NEGATIVE for v in st_tool["net"]]
     fig = go.Figure()
     fig.add_bar(
         x=st_tool["net"], y=st_tool["tool"], orientation="h",
@@ -95,7 +95,7 @@ def _tool_chart(st_tool):
             "negatif %{customdata[2]:.1f}%<extra></extra>"
         ),
     )
-    fig.add_vline(x=0, line=dict(color=LINE, width=1))
+    fig.add_vline(x=0, line=dict(color="rgba(37,89,87,0.12)", width=1))
     fig.update_layout(
         title="Net sentiment per tool (positif − negatif, poin persen)",
         height=max(320, 34 * len(st_tool)), showlegend=False,
@@ -110,16 +110,16 @@ def _volume_vs_net(st_tool):
     fig.add_scatter(
         x=st_tool["n"], y=st_tool["net"], mode="markers+text",
         text=st_tool["tool"], textposition="top center",
-        textfont=dict(size=10, color=NEUTRAL),
+        textfont=dict(size=10, color=GOLDENROD),
         marker=dict(
             size=st_tool["n"] / st_tool["n"].max() * 38 + 12,
             color=st_tool["net"],
-            colorscale=[[0, RUSTY], [0.5, NEUTRAL], [1, NEON_ICE]],
-            line=dict(color=SURFACE, width=1.5),
+            colorscale=[[0, NEGATIVE], [0.5, GOLDENROD], [1, CERULEAN]],
+            line=dict(color=SURFACE_STRONG, width=1.5),
         ),
         hovertemplate="<b>%{text}</b><br>n = %{x}<br>net %{y:+.1f} pp<extra></extra>",
     )
-    fig.add_hline(y=0, line=dict(color=LINE, width=1, dash="dot"))
+    fig.add_hline(y=0, line=dict(color="rgba(37,89,87,0.12)", width=1, dash="dot"))
     fig.update_layout(
         title="Volume pembicaraan vs net sentiment",
         height=400, xaxis_title="jumlah penyebutan", yaxis_title="net sentiment (pp)",
@@ -159,15 +159,15 @@ def render(df, sent, topics):
         kpi("Post berlabel", _fmt(len(sent)),
             f"{_pct(coverage)} dari {_fmt(len(df))} total"), unsafe_allow_html=True)
     c[1].markdown(
-        kpi("Positif", _pct(vc.get("positive", 0)), variant="turq", direction="up"),
+        kpi("Positif", _pct(vc.get("positive", 0)), variant="cerulean", direction="up"),
         unsafe_allow_html=True)
     c[2].markdown(
-        kpi("Negatif", _pct(vc.get("negative", 0)), variant="rust", direction="down"),
+        kpi("Negatif", _pct(vc.get("negative", 0)), variant="negative", direction="down"),
         unsafe_allow_html=True)
     c[3].markdown(
         kpi("Keyakinan < 0,50",
             _pct(low_conf) if low_conf == low_conf else "—",
-            "perlu tinjauan manual", variant="ice"), unsafe_allow_html=True)
+            "perlu tinjauan manual", variant="tuscan"), unsafe_allow_html=True)
 
     if coverage < 95:
         sent_span = f"{sent['created_dt'].min():%b %Y} – {sent['created_dt'].max():%b %Y}"

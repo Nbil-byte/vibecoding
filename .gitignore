@@ -16,3 +16,4 @@ data/raw/*
 .DS_Store
 Thumbs.db
 .vscode/
+cek_runtime.ipynb
